@@ -3,6 +3,7 @@
 #include <ATen/EmptyTensor.h>
 #include <c10/core/Allocator.h>
 #include <c10/core/DeviceGuard.h>
+#include <ATen/xpu/EmptyTensor.h>
 
 namespace at::detail {
 
