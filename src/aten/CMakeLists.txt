@@ -14,6 +14,4 @@ set(INCLUDE_DIR_FOR_TORCH "${CMAKE_BINARY_DIR}/aten/src/ATen/xpu" )
 file(MAKE_DIRECTORY ${INCLUDE_DIR_FOR_TORCH})
 foreach(HEADER  ${xpu_h})
   file(COPY ${HEADER} DESTINATION ${INCLUDE_DIR_FOR_TORCH})
-  # uncomment the following line to install the header to torch/include/ATen/xpu
-  # install(FILES ${HEADER} DESTINATION "include/ATen/xpu")
 endforeach()
