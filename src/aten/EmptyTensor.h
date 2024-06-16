@@ -3,7 +3,6 @@
 
 namespace at::detail {
 
-// XXX: add TORCH_XPU_API
 TORCH_XPU_API TensorBase empty_xpu(
     IntArrayRef size,
     ScalarType dtype,
