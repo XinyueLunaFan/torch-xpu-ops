@@ -30,17 +30,17 @@ on:
         required: true
         type: string
         default: 'inference'
-        description: inference,training. Delimiter is comma
+        description: Test mode inference,training. Delimiter is comma
       scenario:
         required: true
         type: string
         default: 'accuracy'
-        description: accuracy,performance. Delimiter is comma
+        description: Test scenario accuracy,performance. Delimiter is comma
       model:
         required: false
         type: string
         default: ''
-        description: If set, will only launch this one
+        description: Single model to run. If set, will only launch this one
 
 
 permissions: read-all
