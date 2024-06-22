@@ -52,7 +52,7 @@ concurrency:
 jobs:
   Inductor-XPU-E2E-Nightly-Tests:
     runs-on: pvc_e2e
-    timeout-minutes: 900
+    timeout-minutes: 90000
     outputs:
       TORCH_BRANCH_ID: ${{ steps.pinned.outputs.TORCH_BRANCH_ID }}
       TORCH_COMMIT_ID: ${{ steps.pinned.outputs.TORCH_COMMIT_ID }}
@@ -78,6 +78,7 @@ jobs:
           source activate e2e_ci
           git clone -b main https://github.com/pytorch/pytorch pytorch
           cd pytorch
+          git checkout 0f81473d7b4a1bf09246410712df22541be7caf3
           # apply PRs for stock pytorch
           pip install requests
           python ../torch-xpu-ops/.github/scripts/apply_torch_pr.py
@@ -254,7 +255,7 @@ jobs:
           test_driver="${{ needs.Inductor-XPU-E2E-Nightly-Tests.outputs.DRIVER_VERSION }}"
           test_bundle="${{ needs.Inductor-XPU-E2E-Nightly-Tests.outputs.BUNDLE_VERSION }}"
           test_os="${{ needs.Inductor-XPU-E2E-Nightly-Tests.outputs.OS_PRETTY_NAME }}"
-          test_gcc"${{ needs.Inductor-XPU-E2E-Nightly-Tests.outputs.GCC_VERSION }}"
+          test_gcc="${{ needs.Inductor-XPU-E2E-Nightly-Tests.outputs.GCC_VERSION }}"
 
           # On-demand
           if [ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ];then
