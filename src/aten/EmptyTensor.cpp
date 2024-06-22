@@ -1,7 +1,7 @@
 #define TORCH_ASSERT_NO_OPERATORS
-#include "EmptyTensor.h"
 #include <ATen/Context.h>
 #include <ATen/EmptyTensor.h>
+#include <aten/EmptyTensor.h>
 #include <c10/core/Allocator.h>
 #include <c10/core/DeviceGuard.h>
 
