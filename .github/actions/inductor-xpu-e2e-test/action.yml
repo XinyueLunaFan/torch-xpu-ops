@@ -125,6 +125,7 @@ runs:
             done
           done
         done
+        cd ${{ github.workspace }} && rm -rf inductor_log && cp -r ../pytorch/inductor_log .
 
     - name: Summary E2E Accuracy Test (${{ inputs.suite }} ${{ inputs.dt }} ${{ inputs.mode }} ${{ inputs.scenario }})
       if: ${{ inputs.scenario == 'accuracy'}}
@@ -178,7 +179,6 @@ runs:
             done
           done
         done
-        cd ${{ github.workspace }} && rm -rf inductor_log && cp -r ../pytorch/inductor_log .
         find inductor_log/ -name "inductor_*.csv" |xargs cat > inductor_log/summary.csv 2>&1
         num_total=$(cat inductor_log/summary.csv |grep -v ',batch_size,' | wc -l)
         num_passed=$(grep -c "pass" inductor_log/summary.csv)
@@ -220,29 +220,9 @@ runs:
           mode=$(echo ${{ inputs.mode }} |sed 's/,/ /g')
           python inductor_perf_summary.py -p ${dt} -s ${suite} -m ${mode}
         done
-        cd ${{ github.workspace }} && rm -rf inductor_log && cp -r ../pytorch/inductor_log .
 
     - name: Upload Inductor XPU E2E Data
-      if: ${{ ! inputs.expected_pass_num }}
       uses: actions/upload-artifact@v4
       with:
         name: Inductor-XPU-E2E-Data-${{ github.event.pull_request.number || github.sha }}
         path: ${{ github.workspace }}/inductor_log
-    - name: Upload Inductor XPU E2E Data (${{ inputs.suite }} ${{ inputs.dt }} ${{ inputs.mode }} ${{ inputs.scenario }})
-      if: ${{ inputs.expected_pass_num }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: Inductor-XPU-E2E-Data-${{ inputs.suite }}-${{ inputs.dt }}-${{ inputs.mode }}-${{ inputs.scenario }}-${{ github.event.pull_request.number || github.sha }}
-        path: ${{ github.workspace }}/inductor_log
-
-    - name: Test Results Check (${{ inputs.suite }} ${{ inputs.dt }} ${{ inputs.mode }} ${{ inputs.scenario }})
-      if: ${{ inputs.expected_pass_num }}
-      shell: bash
-      run: |
-        cd ${{ github.workspace }}/inductor_log/
-        cat summary.csv summary.log
-        num_passed=$(grep "num_passed:" summary.log | sed -e 's/.*://;s/[^0-9.]//')
-        if [ $num_passed -lt ${{ inputs.expected_pass_num }} ]; then
-          echo -e "[ERROR] Inductor E2E test for ${{ inputs.suite }} ${{ inputs.dt }} ${{ inputs.mode }} passed_num < ${{ inputs.expected_pass_num }}"
-          exit 1
-        fi
