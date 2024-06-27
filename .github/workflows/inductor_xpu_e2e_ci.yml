@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   Inductor-XPU-E2E-CI-Tests:
-    runs-on: pvc_e2e
+    runs-on: pytorch-01
     timeout-minutes: 900
     steps:
       - name: Checkout torch-xpu-ops
@@ -58,7 +58,7 @@ jobs:
           cd ../pytorch
           pip install -r requirements.txt
           export USE_XPU=1
-          source /opt/intel/oneapi/compiler/latest/env/vars.sh
+          source /home/sdp/mengfeil/0.5.2/compiler/latest/env/vars.sh
           export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname $(which conda))/../"}
           python setup.py bdist_wheel
           pip install --force-reinstall dist/*.whl
