@@ -51,7 +51,7 @@ concurrency:
 
 jobs:
   Inductor-XPU-E2E-Nightly-Tests:
-    runs-on: pytorch-01
+    runs-on: e2e_internal
     timeout-minutes: 90000
     outputs:
       TORCH_BRANCH_ID: ${{ steps.pinned.outputs.TORCH_BRANCH_ID }}
@@ -228,7 +228,7 @@ jobs:
 
   Tests-Failure-And-Report:
     if: always()
-    runs-on: pytorch-01
+    runs-on: e2e_internal
     permissions:
       issues: write
     env:

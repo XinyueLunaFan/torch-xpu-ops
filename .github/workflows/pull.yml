@@ -16,7 +16,7 @@ jobs:
     # Don't run on forked repos
     if: github.repository_owner == 'intel'
     name: preci-ut
-    runs-on: pytorch-07_pvc_card_1
+    runs-on: ut_internal
     timeout-minutes: 240
     steps:
       - name: Checkout torch-xpu-ops
