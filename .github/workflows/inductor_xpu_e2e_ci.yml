@@ -58,7 +58,7 @@ jobs:
           cd ../pytorch
           pip install -r requirements.txt
           export USE_XPU=1
-          source /home/sdp/mengfeil/0.5.2/compiler/latest/env/vars.sh
+          source /home/sdp/mengfeil/oneAPI-24.2/compiler/latest/env/vars.sh
           export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname $(which conda))/../"}
           python setup.py bdist_wheel
           pip install --force-reinstall dist/*.whl
