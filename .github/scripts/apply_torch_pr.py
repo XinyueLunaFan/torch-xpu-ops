@@ -11,6 +11,8 @@ parser.add_argument('--pr-list', '-n', nargs='+',
     default=[
         # Fallback to CPU for XPU FP64
         "https://github.com/pytorch/pytorch/pull/126516",
+        # oneDNN v3.5
+        "https://github.com/pytorch/pytorch/pull/129932",
     ]
 )
 parser.add_argument('--extra-pr-list', '-e', nargs='+',default=[])
