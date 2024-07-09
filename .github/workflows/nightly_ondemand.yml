@@ -114,7 +114,7 @@ jobs:
           cd ../ && rm -rf pytorch
           source activate e2e_ci
           git clone https://github.com/pytorch/pytorch pytorch
-          cd pytorch && git checkout ${{ env.pytorch }} 
+          cd pytorch && git checkout 32e74ed0409b02d24e1ed2236138e6cfc2fdb41a
           # apply PRs for stock pytorch
           pip install requests
           python ../torch-xpu-ops/.github/scripts/apply_torch_pr.py
