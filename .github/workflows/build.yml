@@ -43,11 +43,7 @@ jobs:
         conda remove -n ${conda_env} --all -y
         conda create -n ${conda_env} python=${python_version} -y
         conda activate ${conda_env}
-
-        if [ -z ${conda env list | grep 'ucrt'} ]; then
-            conda remove ucrt
-        fi
-
+        conda remove ucrt
         conda install cmake==3.26.4 --force
         conda list
 
