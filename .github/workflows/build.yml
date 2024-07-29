@@ -14,7 +14,7 @@ on:
             type: string
 
 env:
-    home_dir: 'C:\torch'
+    home_dir: '%CD%\torch'
     conda_env: 'torch_venv'
     conda_path: 'C:\Users\nrvalgo_jenkinsadm\miniforge3'
     basekit_path: 'C:\Program Files (x86)\Intel\oneAPI'
