@@ -38,7 +38,7 @@ jobs:
 
     - name: Set conda environment
       run: |
-        # ${env.conda_path}\Scripts\activate
+        ${{env.conda_path}}\Scripts\activate
         conda.exe init cmd.exe
         conda remove -n ${conda_env} --all -y
         conda create -n ${conda_env} python=${python_version} -y
