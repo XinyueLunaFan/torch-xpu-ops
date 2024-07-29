@@ -43,7 +43,7 @@ jobs:
         conda remove -n ${conda_env} --all -y
         conda create -n ${conda_env} python=${python_version} -y
         conda activate ${conda_env}
-        if [[ "$(conda env list | grep '*' | cut -d' ' -f1)" = "${CONDA_ENV}" ]]; then
+        if ()"$(conda env list | grep '*' | cut -d' ' -f1)" = "${CONDA_ENV}"); then
             echo "Correct conda env activated."
         else
             echo "Conda env not activated."
