@@ -40,7 +40,7 @@ jobs:
       shell: cmd
       run: |
         call %conda_path%\Scripts\activate.bat
-        echo "123"
+        echo %conda_path%\Scripts\activate.bat
         conda remove -n ${conda_env} --all -y
         conda create -n ${conda_env} python=${python_version} -y
         conda activate ${conda_env}
@@ -50,7 +50,9 @@ jobs:
 
     - name: Activate Intel Basekit
       shell: cmd
-      run: call ${basekit_path}\setvars.bat
+      run: |
+        echo ${basekit_path}\setvars.bat
+        call ${basekit_path}\setvars.bat
 
     - name: Build Torch
       run: |
