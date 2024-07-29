@@ -38,7 +38,7 @@ jobs:
 
     - name: Set conda environment
       run: |
-        set -x
+        Set-PSDebug -Trace 1
         source ${conda_path}\Scripts\activate 2>&1 >> /dev/null 
         conda remove -n ${conda_env} --all -y
         conda create -n ${conda_env} python=${python_version} -y
