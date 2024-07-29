@@ -1,0 +1,90 @@
+name: Build and Test Torch
+
+on:
+    workflow_dispatch:
+      inputs:
+        win_runner:
+            description: Where to run the GHA job?
+            type: choice
+            options:
+            - "icx-4434"
+        working_commit:
+            description: 'Working commit to pass to xpu.txt'
+            required: true
+            type: string
+
+env:
+    home_dir: 'C:\torch'
+    conda_env: 'torch_venv'
+    conda_path: 'C:\Users\nrvalgo_jenkinsadm\miniforge3'
+    basekit_path: 'C:\Program Files (x86)\Intel\oneAPI'
+    python_version: '3.10'
+    node_proxy: 'http://proxy-us.intel.com:911'
+    USE_XPU: 1
+    VS2022INSTALLDIR: 'C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools'
+
+jobs:
+  build-and-test:
+    runs-on: ["${{ inputs.win_runner }}"]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.WORKFLOW_TOKEN }}
+        ref: main
+        fetch-depth: 0
+        path: ${{ env.home_dir }}//actionrepo
+
+    - name: Set conda environment
+      run: |
+        set -x
+        source ${conda_path}\Scripts\activate 2>&1 >> /dev/null 
+        conda remove -n ${conda_env} --all -y
+        conda create -n ${conda_env} python=${python_version} -y
+        conda activate ${conda_env}
+        if [[ "$(conda env list | grep '*' | cut -d' ' -f1)" = "${CONDA_ENV}" ]]; then
+            echo "Correct conda env activated."
+        else
+            echo "Conda env not activated."
+            exit
+        fi
+
+        if [[ conda env list | grep 'ucrt' ]]; then
+            conda remove ucrt
+        fi
+
+        conda install cmake==3.26.4 --force
+        conda list
+
+    - name: Activate Intel Basekit
+      run: ${basekit_path}\setvars.bat
+
+    - name: Build Torch
+      run: |
+        git clone https://github.com/pytorch/pytorch.git ${home_dir}/pytorch
+        cd ${home_dir}/pytorch
+        echo ${{ inputs.working_commit }} > third_party/xpu.txt
+        python -u setup.py bdist_wheel
+
+    - name: Build TorchVision
+      run: |
+        git clone https://github.com/pytorch/vision.git ${home_dir}/vision
+        cd ${home_dir}/vision
+        pip install -r docs/requirements.txt
+        if [ -e ${home_dir}/pytorch/dist/torch-*.whl ]; then
+            pip install ${home_dir}/pytorch/dist/torch-*.whl --force-reinstall
+        else
+            echo "No torch whl found."
+            exit
+        fi
+
+        python setup.py bdist_wheel
+
+        if [ -e ${home_dir}/vision/dist/torchvision-*.whl ]; then
+            pip install ${home_dir}/vision/dist/torchvision-*.whl --force-reinstall
+        else
+            echo "No torchvision whl found."
+            exit
+        fi
+
