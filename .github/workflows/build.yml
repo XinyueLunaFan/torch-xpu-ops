@@ -17,7 +17,6 @@ env:
     home_dir: '%CD%\torch'
     conda_env: 'torch_venv'
     conda_path: 'C:\Users\nrvalgo_jenkinsadm\miniforge3'
-    basekit_path: 'C:\Program Files (x86)\Intel\oneAPI'
     python_version: '3.10'
     node_proxy: 'http://proxy-us.intel.com:911'
     USE_XPU: 1
@@ -51,8 +50,9 @@ jobs:
     - name: Activate Intel Basekit
       shell: cmd
       run: |
-        echo %basekit_path%\setvars.bat
-        call %basekit_path%\setvars.bat
+        set "basekit_path=C:\Program Files (x86)\Intel\oneAPI"
+        echo "%basekit_path%\setvars.bat"
+        call "%basekit_path%\setvars.bat"
 
     - name: Build Torch
       run: |
