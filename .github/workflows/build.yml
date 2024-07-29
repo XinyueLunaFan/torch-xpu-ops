@@ -40,6 +40,7 @@ jobs:
       shell: cmd
       run: |
         call %conda_path%\Scripts\activate.bat
+        echo "123"
         conda remove -n ${conda_env} --all -y
         conda create -n ${conda_env} python=${python_version} -y
         conda activate ${conda_env}
