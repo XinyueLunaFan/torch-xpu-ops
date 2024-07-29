@@ -43,7 +43,7 @@ jobs:
         conda remove -n ${conda_env} --all -y
         conda create -n ${conda_env} python=${python_version} -y
         conda activate ${conda_env}
-        if [[ "$(conda env list | grep '*' | cut -d' ' -f1)" = "${conda_env}" ]]; then
+        if [[ (conda env list | Select-String "\*" | ForEach-Object { $_.ToString().Split(' ')[0] }).Trim() -eq ${conda_env} ]]; then
             echo "Correct conda env activated."
         else
             echo "Correct conda env not activated."
