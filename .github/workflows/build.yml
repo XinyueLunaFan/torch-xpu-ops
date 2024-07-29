@@ -50,7 +50,7 @@ jobs:
             exit 1
           fi
 
-        if (conda env list | grep 'ucrt'); then
+        if [ -z ${conda env list | grep 'ucrt'} ]; then
             conda remove ucrt
         fi
 
