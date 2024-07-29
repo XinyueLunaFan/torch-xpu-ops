@@ -1,4 +1,4 @@
-name: Build and Test Torch
+name: Build Torch
 
 on:
     workflow_dispatch:
@@ -43,12 +43,12 @@ jobs:
         conda remove -n ${conda_env} --all -y
         conda create -n ${conda_env} python=${python_version} -y
         conda activate ${conda_env}
-          if [[ "$(conda env list | grep '*' | cut -d' ' -f1)" = "${conda_env}" ]]; then
+        if [[ "$(conda env list | grep '*' | cut -d' ' -f1)" = "${conda_env}" ]]; then
             echo "Correct conda env activated."
-          else
+        else
             echo "Correct conda env not activated."
             exit 1
-          fi
+        fi
 
         if [ -z ${conda env list | grep 'ucrt'} ]; then
             conda remove ucrt
