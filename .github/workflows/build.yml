@@ -39,8 +39,7 @@ jobs:
     - name: Set conda environment
       shell: cmd
       run: |
-        echo "Activating base conda environment at $env:conda_path\Scripts\activate.bat"
-        & "$env:conda_path\Scripts\activate.bat"
+        $env:conda_path\Scripts\activate.bat"
         
         echo "Removing existing conda environment $env:conda_env"
         conda remove -n "$env:conda_env" --all -y
