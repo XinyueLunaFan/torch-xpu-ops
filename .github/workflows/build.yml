@@ -21,6 +21,7 @@ env:
     node_proxy: 'http://proxy-us.intel.com:911'
     USE_XPU: 1
     VS2022INSTALLDIR: 'C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools'
+    ACTIONS_RUNNER_DEBUG: true
 
 jobs:
   build-and-test:
@@ -38,13 +39,11 @@ jobs:
     - name: Set conda environment
       shell: cmd
       run: |
-        echo Current directory: %CD%
-        echo Conda path: %conda_path%
-        echo Conda environment: %conda_env%
-        echo Python version: %python_version%
-        
         echo Activating base conda environment at %conda_path%\Scripts\activate.bat
         call %conda_path%\Scripts\activate.bat
+        
+        echo Removing existing conda environment %conda_env%
+        conda remove -n %conda_env% --all -y
 
         echo Creating new conda environment %conda_env% with python version %python_version%
         conda create -n %conda_env% python=%python_version% -y
@@ -60,6 +59,7 @@ jobs:
 
         echo Listing installed conda packages
         conda list
+
     - name: Activate Intel Basekit
       shell: cmd
       run: |
@@ -68,9 +68,8 @@ jobs:
         call "%basekit_path%\setvars.bat"
 
     - name: Build Torch
-      shell: cmd
       run: |
-        rmdir /S "%home_dir%\pytorch"
+        Remove-Item -Recurse -Force "$env:home_dir\pytorch"
         git clone https://github.com/pytorch/pytorch.git %home_dir%\pytorch
         cd %home_dir%\pytorch
         echo ${{ inputs.working_commit }} > third_party/xpu.txt
