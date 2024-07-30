@@ -42,6 +42,8 @@ jobs:
         echo Activating base conda environment at %conda_path%\Scripts\activate.bat
         call %conda_path%\Scripts\activate.bat
         
+        conda list
+
         echo Removing existing conda environment %conda_env%
         conda remove -n %conda_env% --all -y
 
@@ -69,9 +71,7 @@ jobs:
 
     - name: Build Torch
       run: |
-        if (Test-Path "$env:home_dir\pytorch") {
-            Remove-Item -Recurse -Force "$env:home_dir\pytorch"
-        }
+        rmdir /S "%home_dir%\vision"
         git clone https://github.com/pytorch/pytorch.git %home_dir%\pytorch
         cd %home_dir%\pytorch
         echo ${{ inputs.working_commit }} > third_party/xpu.txt
@@ -79,7 +79,6 @@ jobs:
 
     - name: Build TorchVision
       run: |
-        rmdir /S "%home_dir%\vision"
         git clone https://github.com/pytorch/vision.git %home_dir%\vision
         cd %home_dir%\vision
         pip install -r docs/requirements.txt
