@@ -36,32 +36,29 @@ jobs:
         fetch-depth: 0
         path: ${{ env.home_dir }}//actionrepo
 
-    - name: Set conda environment
-      shell: cmd
-      run: |
-        $env:conda_path\Scripts\activate.bat"
-        
-        echo "Removing existing conda environment $env:conda_env"
-        conda remove -n "$env:conda_env" --all -y
-        
-        echo "Creating new conda environment $env:conda_env with python version $env:python_version"
-        conda create -n "$env:conda_env" python="$env:python_version" -y
-        
-        echo "Activating the newly created conda environment $env:conda_env"
-        & "$env:conda_path\condabin\conda.bat" activate "$env:conda_env"
-        
-        echo "Removing ucrt (if exists)"
-        try {
-            conda remove ucrt -y
-        } catch {
-            echo "ucrt not found"
-        }
-        
-        echo "Installing cmake version 3.26.4"
-        conda install cmake==3.26.4 --force -y
-        
-        echo "Listing installed conda packages"
-        conda list
+        - name: Set conda environment
+        shell: cmd
+        run: |
+          echo Activating base conda environment at %conda_path%\Scripts\activate.bat
+          call %conda_path%\Scripts\activate.bat
+          
+          echo Removing existing conda environment %conda_env%
+          conda remove -n %conda_env% --all -y
+  
+          echo Creating new conda environment %conda_env% with python version %python_version%
+          conda create -n %conda_env% python=%python_version% -y
+  
+          echo Activating the newly created conda environment %conda_env%
+          call %conda_path%\condabin\conda.bat activate %conda_env%
+          
+          echo Removing ucrt (if exists)
+          conda remove ucrt -y || echo ucrt not found
+  
+          echo Installing cmake version 3.26.4
+          conda install cmake==3.26.4 --force -y
+  
+          echo Listing installed conda packages
+          conda list
 
     - name: Activate Intel Basekit
       shell: cmd
