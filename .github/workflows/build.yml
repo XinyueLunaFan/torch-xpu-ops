@@ -39,10 +39,10 @@ jobs:
       shell: cmd
       run: |
         call %conda_path%\Scripts\activate.bat
-        echo %conda_path%\Scripts\activate.bat
-        conda remove -n ${conda_env} --all -y
-        conda create -n ${conda_env} python=${{ env.python_version }} -y
-        call activate ${conda_env}
+        echo "Activated Conda at %conda_path%\Scripts\activate.bat"
+        conda remove -n %conda_env% --all -y
+        conda create -n %conda_env% python=%python_version% -y
+        call %conda_path%\condabin\conda.bat activate %conda_env%
         conda remove ucrt -y
         conda install cmake==3.26.4 --force -y
         conda list
