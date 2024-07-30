@@ -37,7 +37,7 @@ jobs:
 
     - name: Set conda environment
       run: |
-        call %conda_path%\Scripts\activate.bat
+        %conda_path%\Scripts\activate.bat
         echo %conda_path%\Scripts\activate.bat
         conda remove -n %conda_env% --all -y
         conda create -n %conda_env% python=${python_version} -y
