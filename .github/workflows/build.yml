@@ -39,13 +39,30 @@ jobs:
     - name: Set conda environment
       shell: cmd
       run: |
+        echo Current directory: %CD%
+        echo Conda path: %conda_path%
+        echo Conda environment: %conda_env%
+        echo Python version: %python_version%
+        
+        echo Activating base conda environment at %conda_path%\Scripts\activate.bat
         call %conda_path%\Scripts\activate.bat
-        echo "Activated Conda at %conda_path%\Scripts\activate.bat"
+        
+        echo Removing existing conda environment %conda_env%
         conda remove -n %conda_env% --all -y
+
+        echo Creating new conda environment %conda_env% with python version %python_version%
         conda create -n %conda_env% python=%python_version% -y
+
+        echo Activating the newly created conda environment %conda_env%
         call %conda_path%\condabin\conda.bat activate %conda_env%
-        conda remove ucrt -y
+        
+        echo Removing ucrt (if exists)
+        conda remove ucrt -y || echo ucrt not found
+
+        echo Installing cmake version 3.26.4
         conda install cmake==3.26.4 --force -y
+
+        echo Listing installed conda packages
         conda list
 
     - name: Activate Intel Basekit
@@ -57,7 +74,7 @@ jobs:
 
     - name: Build Torch
       run: |
-        rmdir /S %home_dir%\pytorch
+        rmdir /S "%home_dir%\pytorch"
         git clone https://github.com/pytorch/pytorch.git %home_dir%\pytorch
         cd %home_dir%\pytorch
         echo ${{ inputs.working_commit }} > third_party/xpu.txt
@@ -65,7 +82,7 @@ jobs:
 
     - name: Build TorchVision
       run: |
-        rmdir /S %home_dir%\vision
+        rmdir /S "%home_dir%\vision"
         git clone https://github.com/pytorch/vision.git %home_dir%\vision
         cd %home_dir%\vision
         pip install -r docs/requirements.txt
@@ -87,7 +104,7 @@ jobs:
 
     - name: Run Unit Tests
       run: |
-        rmdir /S %home_dir%\xpurepo
+        rmdir /S "%home_dir%\xpurepo"
         git clone https://github.com/intel/torch-xpu-ops.git %home_dir%\xpurepo
         cd %home_dir%\xpurepo\examples
         pip install pytest expecttest
