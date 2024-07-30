@@ -1,4 +1,4 @@
-name: Build Torch
+name: Build Torch and UT test
 
 on:
     workflow_dispatch:
@@ -81,4 +81,11 @@ jobs:
             echo "No torchvision whl found."
             exit
         fi
+
+    - name: Run Unit Tests
+      run: |
+        git clone https://github.com/intel/torch-xpu-ops.git
+        cd torch-xpu-ops/examples
+        pip install pytest expecttest
+        python -m pytest -v | tee "C:\Users\nrvalgo_jenkinsadm\mtl-bundle-uts.log"
 
