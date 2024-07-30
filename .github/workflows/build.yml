@@ -37,7 +37,7 @@ jobs:
         path: ${{ env.home_dir }}//actionrepo
 
     - name: Set conda environment
-      shell: cmd
+      shell: bash
       run: |
         echo Activating base conda environment at %conda_path%\Scripts\activate.bat
         call %conda_path%\Scripts\activate.bat
