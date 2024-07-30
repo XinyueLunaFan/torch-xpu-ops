@@ -48,12 +48,12 @@ jobs:
         
         echo Removing existing conda environment %conda_env%
         conda remove -n %conda_env% --all -y
+        
+        echo Re-activating base conda environment
+        call %conda_path%\Scripts\activate.bat
 
         echo Creating new conda environment %conda_env% with python version %python_version%
         conda create -n %conda_env% python=%python_version% -y
-
-        echo Re-activating base conda environment
-        call %conda_path%\Scripts\activate.bat
 
         echo Activating the newly created conda environment %conda_env%
         call %conda_path%\condabin\conda.bat activate %conda_env%
