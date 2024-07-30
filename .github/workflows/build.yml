@@ -74,6 +74,7 @@ jobs:
         call "%basekit_path%\setvars.bat"
 
     - name: Build Torch
+      shell: cmd
       run: |
         rmdir /S "%home_dir%\pytorch"
         git clone https://github.com/pytorch/pytorch.git %home_dir%\pytorch
