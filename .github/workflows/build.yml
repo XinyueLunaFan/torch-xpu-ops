@@ -21,7 +21,6 @@ env:
     node_proxy: 'http://proxy-us.intel.com:911'
     USE_XPU: 1
     VS2022INSTALLDIR: 'C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools'
-    ACTIONS_RUNNER_DEBUG: true
 
 jobs:
   build-and-test:
@@ -53,6 +52,9 @@ jobs:
         echo Creating new conda environment %conda_env% with python version %python_version%
         conda create -n %conda_env% python=%python_version% -y
 
+        echo Re-activating base conda environment
+        call %conda_path%\Scripts\activate.bat
+
         echo Activating the newly created conda environment %conda_env%
         call %conda_path%\condabin\conda.bat activate %conda_env%
         
@@ -64,7 +66,6 @@ jobs:
 
         echo Listing installed conda packages
         conda list
-
     - name: Activate Intel Basekit
       shell: cmd
       run: |
