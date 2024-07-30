@@ -37,10 +37,8 @@ jobs:
         path: ${{ env.home_dir }}//actionrepo
 
     - name: Set conda environment
-      shell: PowerShell
+      shell: cmd
       run: |
-        conda init powershell
-
         echo "Activating base conda environment at $env:conda_path\Scripts\activate.bat"
         & "$env:conda_path\Scripts\activate.bat"
         
