@@ -84,8 +84,8 @@ jobs:
 
     - name: Run Unit Tests
       run: |
-        git clone https://github.com/intel/torch-xpu-ops.git
-        cd torch-xpu-ops/examples
+        git clone https://github.com/intel/torch-xpu-ops.git %home_dir%\xpurepo
+        cd %home_dir%\xpurepo\examples
         pip install pytest expecttest
         python -m pytest -v | tee "C:\Users\nrvalgo_jenkinsadm\mtl-bundle-uts.log"
 
