@@ -47,12 +47,6 @@ jobs:
         call conda install rust -y
         call conda list
 
-    - name: Activate Intel Basekit
-      shell: cmd
-      run: |
-        set "basekit_path=C:\Program Files (x86)\Intel\oneAPI"
-        call "%basekit_path%\setvars.bat"
-
   Build-whls:
     runs-on: ["${{ inputs.win_runner }}"]
     needs: [Preparation]
@@ -80,6 +74,8 @@ jobs:
       shell: cmd
       run: |
         call %conda_path%\Scripts\activate.bat %conda_env%
+        set "basekit_path=C:\Program Files (x86)\Intel\oneAPI"
+        call "%basekit_path%\setvars.bat"
         if exist "%home_dir%\vision" rmdir /s /q "%home_dir%\vision"
         git clone https://github.com/pytorch/vision.git %home_dir%\vision
         cd %home_dir%\vision
@@ -110,6 +106,8 @@ jobs:
       shell: cmd
       run: |
         call %conda_path%\Scripts\activate.bat activate %conda_env%
+        set "basekit_path=C:\Program Files (x86)\Intel\oneAPI"
+        call "%basekit_path%\setvars.bat"
 
         if exist "%home_dir%\xpurepo" (
           rmdir /s /q "%home_dir%\xpurepo"
