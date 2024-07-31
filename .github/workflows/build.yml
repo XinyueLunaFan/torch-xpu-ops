@@ -45,7 +45,7 @@ jobs:
         call conda activate %conda_env%
         call conda remove ucrt -y
         call conda install cmake==3.26.4 ninja=1.10.2 --force -y
-        call conda install rust -y
+        call conda install pyyaml -y
         call conda list
 
   Build-whls:
@@ -55,6 +55,9 @@ jobs:
     - name: Build Torch
       shell: cmd
       run: |
+        echo "call %conda_path%\Scripts\activate.bat %conda_env%"
+        echo "call "%VS_BUILD_TOOLS_PATH%\VC\Auxiliary\Build\vcvarsall.bat" x64"
+        echo "call "%basekit_path%\setvars.bat""
         call %conda_path%\Scripts\activate.bat %conda_env%
         set "basekit_path=C:\Program Files (x86)\Intel\oneAPI"
         call "%VS_BUILD_TOOLS_PATH%\VC\Auxiliary\Build\vcvarsall.bat" x64
