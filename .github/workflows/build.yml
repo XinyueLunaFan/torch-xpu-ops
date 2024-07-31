@@ -60,7 +60,6 @@ jobs:
       shell: cmd
       run: |
         call %conda_path%\Scripts\activate.bat %conda_env%
-        conda list
 
         if exist "%home_dir%\pytorch" (
           rmdir /s /q "%home_dir%\pytorch"
@@ -79,21 +78,22 @@ jobs:
         git clone https://github.com/pytorch/vision.git %home_dir%\vision
         cd %home_dir%\vision
         pip install -r docs/requirements.txt
-        if [ -e %home_dir%\pytorch\dist\torch-*.whl ]; then
-            pip install %home_dir%\pytorch\dist\torch-*.whl --force-reinstall
-        else
-            echo "No torch whl found."
-            exit
-        fi
+
+        if exist %home_dir%\pytorch\dist\torch-*.whl (
+          pip install %home_dir%\pytorch\dist\torch-*.whl --force-reinstall
+        ) else (
+          echo "No torch whl found."
+          exit
+        )
 
         python setup.py bdist_wheel
 
-        if [ -e %home_dir%\vision\dist\torchvision-*.whl ]; then
-            pip install %home_dir%\vision\dist\torchvision-*.whl --force-reinstall
-        else
-            echo "No torchvision whl found."
-            exit
-        fi
+        if exist %home_dir%\vision\dist\torchvision-*.whl (
+          pip install %home_dir%\vision\dist\torchvision-*.whl --force-reinstall        
+        ) else (
+          echo "No torchvision whl found."
+          exit         
+        )
 
   Unit-tests:
     runs-on: ["${{ inputs.win_runner }}"]
@@ -103,7 +103,11 @@ jobs:
       shell: cmd
       run: |
         call %conda_path%\Scripts\activate.bat activate %conda_env%
-        if exist "%home_dir%\xpurepo" rmdir /s /q "%home_dir%\xpurepo"
+        
+        if exist "%home_dir%\xpurepo" (
+          rmdir /s /q "%home_dir%\xpurepo"
+        )
+
         git clone https://github.com/intel/torch-xpu-ops.git %home_dir%\xpurepo
         cd %home_dir%\xpurepo\examples
         pip install pytest expecttest
