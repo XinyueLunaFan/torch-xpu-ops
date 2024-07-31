@@ -21,6 +21,7 @@ env:
     USE_XPU: 1
     VS2022INSTALLDIR: 'C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools'
     ACTIONS_RUNNER_DEBUG: true
+    PATH: '%PATH%;C:\Program Files\Git\cmd;C:\Users\nrvalgo_jenkinsadm\miniforge3;C:\Users\nrvalgo_jenkinsadm\miniforge3\Scripts.'
 
 jobs:
   Preparation:
@@ -38,10 +39,9 @@ jobs:
       shell: cmd
       run: |
         call %conda_path%\Scripts\activate.bat
-        call conda init
         call conda remove -n %conda_env% --all -y
         call conda create -n %conda_env% python=3.10 -y
-        call activate %conda_env%
+        call conda activate %conda_env%
         call conda remove ucrt -y
         call conda install cmake==3.26.4 --force -y
         call conda list
@@ -59,6 +59,7 @@ jobs:
     - name: Build Torch
       shell: cmd
       run: |
+        call %conda_path%\Scripts\activate.bat activate %conda_env%
         conda list
         if exist "%home_dir%\pytorch" rmdir /s /q "%home_dir%\pytorch"
         git clone https://github.com/pytorch/pytorch.git %home_dir%\pytorch
@@ -69,6 +70,7 @@ jobs:
     - name: Build TorchVision
       shell: cmd
       run: |
+        call %conda_path%\Scripts\activate.bat activate %conda_env%
         if exist "%home_dir%\vision" rmdir /s /q "%home_dir%\vision"
         git clone https://github.com/pytorch/vision.git %home_dir%\vision
         cd %home_dir%\vision
@@ -94,7 +96,9 @@ jobs:
     needs: [Build-whls, Preparation]
     steps:
     - name: Run Unit Tests
+      shell: cmd
       run: |
+        call %conda_path%\Scripts\activate.bat activate %conda_env%
         if exist "%home_dir%\xpurepo" rmdir /s /q "%home_dir%\xpurepo"
         git clone https://github.com/intel/torch-xpu-ops.git %home_dir%\xpurepo
         cd %home_dir%\xpurepo\examples
