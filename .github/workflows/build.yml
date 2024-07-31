@@ -6,7 +6,7 @@ on:
             description: Where to run the GHA job?
             type: choice
             options:
-            - "icx-4434"
+            - "icx-1089"
         working_commit:
             description: 'Working commit to pass to xpu.txt'
             required: true
