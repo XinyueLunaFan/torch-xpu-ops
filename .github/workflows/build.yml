@@ -61,6 +61,8 @@ jobs:
       shell: cmd
       run: |
         call %conda_path%\Scripts\activate.bat %conda_env%
+        set "basekit_path=C:\Program Files (x86)\Intel\oneAPI"
+        call "%basekit_path%\setvars.bat"
 
         if exist "%home_dir%\pytorch" (
           rmdir /s /q "%home_dir%\pytorch"
