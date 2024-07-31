@@ -77,6 +77,7 @@ jobs:
         if exist "%home_dir%\vision" rmdir /s /q "%home_dir%\vision"
         git clone https://github.com/pytorch/vision.git %home_dir%\vision
         cd %home_dir%\vision
+        git submodule update --init --recursive
         pip install -r docs/requirements.txt
 
         if exist %home_dir%\pytorch\dist\torch-*.whl (
