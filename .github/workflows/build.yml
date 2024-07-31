@@ -7,6 +7,7 @@ on:
             type: choice
             options:
             - "icx-4434"
+            - "self-hosted"
         working_commit:
             description: 'Working commit to pass to xpu.txt'
             required: true
@@ -14,8 +15,8 @@ on:
 
 env:
     home_dir: 'torch'
-    conda_env: torch_venv
-    conda_path: C:\Users\nrvalgo_jenkinsadm\miniforge3
+    conda_env: 'torch_venv'
+    conda_path: 'C:\Users\nrvalgo_jenkinsadm\miniforge3'
     python_version: '3.10'
     node_proxy: 'http://proxy-us.intel.com:911'
     USE_XPU: 1
