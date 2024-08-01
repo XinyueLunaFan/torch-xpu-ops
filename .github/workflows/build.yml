@@ -56,21 +56,17 @@ jobs:
       shell: cmd
       run: |
         call %conda_path%\Scripts\activate.bat %conda_env%
-        set "basekit_path=C:\Program Files (x86)\Intel\oneAPI"
-        call "%VS2022INSTALLDIR%\VC\Auxiliary\Build\vcvarsall.bat" x64
-        call "%basekit_path%\setvars.bat"
-        echo "call %conda_path%\Scripts\activate.bat %conda_env%"
-        echo "call "%VS2022INSTALLDIR%\VC\Auxiliary\Build\vcvarsall.bat" x64"
-        echo "%basekit_path%"
+        call "C:\Program Files (x86)\Intel\oneAPI\setvars.bat"
+
 
         if exist "%home_dir%\pytorch" (
           rmdir /s /q "%home_dir%\pytorch"
         )
 
-        git clone https://github.com/pytorch/pytorch.git %home_dir%\pytorch
-        cd %home_dir%\pytorch
-        echo | set /p dummy=${{ inputs.working_commit }} > third_party/xpu.txt
-        git sync
+        git clone https://github.com/pytorch/pytorch.git pytorch
+        cd pytorch
+        python -c "import os;commit_number = os.getenv('working_commit'); with open('third_party/xpu.txt', 'w') as f: f.write(commit_number)"
+        git submodule sync
         git submodule update --init --recursive
         python -m pip install -r requirements.txt
         python -u setup.py bdist_wheel
