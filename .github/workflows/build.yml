@@ -36,17 +36,17 @@ jobs:
         fetch-depth: 0
         path: ${{ env.home_dir }}//actionrepo
 
-    - name: Set conda environment
-      shell: cmd
-      run: |
-        call %conda_path%\Scripts\activate.bat
-        call conda remove -n %conda_env% --all -y
-        call conda create -n %conda_env% python=3.10 -y
-        call conda activate %conda_env%
-        call conda remove ucrt -y
-        call conda install cmake==3.26.4 ninja=1.10.2 --force -y
-        call conda install pyyaml -y
-        call conda list
+    # - name: Set conda environment
+    #   shell: cmd
+    #   run: |
+    #     call %conda_path%\Scripts\activate.bat
+    #     call conda remove -n %conda_env% --all -y
+    #     call conda create -n %conda_env% python=3.10 -y
+    #     call conda activate %conda_env%
+    #     call conda remove ucrt -y
+    #     call conda install cmake==3.26.4 ninja=1.10.2 --force -y
+    #     call conda install pyyaml -y
+    #     call conda list
 
   Build-whls:
     runs-on: ["${{ inputs.win_runner }}"]
