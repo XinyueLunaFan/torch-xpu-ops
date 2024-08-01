@@ -14,7 +14,7 @@ on:
             type: string
 
 env:
-    home_dir: 'torch'
+    home_dir: 't'
     conda_env: 'torch_venv'
     conda_path: 'C:\Users\nrvalgo_jenkinsadm\miniforge3'
     python_version: '3.10'
@@ -34,18 +34,6 @@ jobs:
         fetch-depth: 0
         path: ${{ env.home_dir }}//actionrepo
 
-    # - name: Set conda environment
-    #   shell: cmd
-    #   run: |
-    #     call %conda_path%\Scripts\activate.bat
-    #     call conda remove -n %conda_env% --all -y
-    #     call conda create -n %conda_env% python=3.10 -y
-    #     call conda activate %conda_env%
-    #     call conda remove ucrt -y
-    #     call conda install cmake==3.26.4 ninja=1.10.2 --force -y
-    #     call conda install pyyaml -y
-    #     call conda list
-
   Build-whls:
     runs-on: ["${{ inputs.win_runner }}"]
     needs: [Preparation]
@@ -57,12 +45,12 @@ jobs:
         call "C:\Program Files (x86)\Intel\oneAPI\setvars.bat"
 
 
-        if exist "%home_dir%\pytorch" (
-          rmdir /s /q "%home_dir%\pytorch"
+        if exist "C:\pytorch" (
+          rmdir /s /q "C:\pytorch"
         )
 
-        git clone https://github.com/pytorch/pytorch.git pytorch
-        cd pytorch
+        git clone https://github.com/pytorch/pytorch.git C:\pytorch
+        cd C:\pytorch
         python -c "import os;commit_number = os.getenv('working_commit'); with open('third_party/xpu.txt', 'w') as f: f.write(commit_number)"
         git submodule sync
         git submodule update --init --recursive
