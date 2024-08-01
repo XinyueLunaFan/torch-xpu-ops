@@ -69,7 +69,7 @@ jobs:
 
         git clone https://github.com/pytorch/pytorch.git %home_dir%\pytorch
         cd %home_dir%\pytorch
-        echo ${{ inputs.working_commit }} > third_party/xpu.txt
+        echo | set /p dummy=${{ inputs.working_commit }} > third_party/xpu.txt
         git sync
         git submodule update --init --recursive
         python -m pip install -r requirements.txt
