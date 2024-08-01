@@ -55,7 +55,7 @@ jobs:
         git submodule sync
         git submodule update --init --recursive
         python -m pip install -r requirements.txt
-        python -u setup.py bdist_wheel
+        python -u -q setup.py bdist_wheel
 
     - name: Build TorchVision
       shell: cmd
