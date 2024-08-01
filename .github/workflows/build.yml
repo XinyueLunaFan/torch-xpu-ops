@@ -51,7 +51,7 @@ jobs:
 
         git clone https://github.com/pytorch/pytorch.git C:\pytorch
         cd C:\pytorch
-        python -c "import os;commit_number = os.getenv('working_commit'); with open('third_party/xpu.txt', 'w') as f: f.write(commit_number)"
+        python -c "import os;commit_number = os.getenv('working_commit');f=open('third_party/xpu.txt', 'w');f.write(commit_number);f.close()"
         git submodule sync
         git submodule update --init --recursive
         python -m pip install -r requirements.txt
