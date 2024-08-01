@@ -56,11 +56,11 @@ jobs:
       shell: cmd
       run: |
         echo "call %conda_path%\Scripts\activate.bat %conda_env%"
-        echo "call "%VS_BUILD_TOOLS_PATH%\VC\Auxiliary\Build\vcvarsall.bat" x64"
+        echo "call "%VS2022INSTALLDIR%\VC\Auxiliary\Build\vcvarsall.bat" x64"
         echo "%basekit_path%"
         call %conda_path%\Scripts\activate.bat %conda_env%
         set "basekit_path=C:\Program Files (x86)\Intel\oneAPI"
-        call "%VS_BUILD_TOOLS_PATH%\VC\Auxiliary\Build\vcvarsall.bat" x64
+        call "%VS2022INSTALLDIR%\VC\Auxiliary\Build\vcvarsall.bat" x64
         call "%basekit_path%\setvars.bat"
 
         if exist "%home_dir%\pytorch" (
