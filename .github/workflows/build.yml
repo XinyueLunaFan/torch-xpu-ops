@@ -48,14 +48,14 @@ jobs:
           rmdir /s /q "C:\pytorch"
         )
 
-        git clone https://github.com/pytorch/pytorch.git C:\pytorch
+        git clone https://github.com/pytorch/pytorch.git C:\pytorch > tmp_git_log.txt
         cd C:\pytorch
         set commit_number_arg=${{ inputs.working_commit }}
         python -c "import os;commit_number = os.getenv('commit_number_arg');f=open('third_party/xpu.txt', 'w');f.write(commit_number);f.close()"
-        git submodule sync
-        git submodule update --init --recursive
-        python -m pip install -r requirements.txt
-        python -u -q setup.py bdist_wheel
+        git submodule sync > tmp_git_sync_log.txt
+        git submodule update --init --recursive > tmp_git_update_log.txt
+        python -m pip install -r requirements.txt > tmp_pip_install_requirements_log.txt
+        python setup.py bdist_wheel > tmp_log.txt
 
     - name: Build TorchVision
       shell: cmd
