@@ -62,7 +62,7 @@ jobs:
         cd C:\pytorch
         set commit_number_arg=${{ inputs.working_commit }}
         python -c "import os;commit_number = os.getenv('commit_number_arg');f=open('third_party/xpu.txt', 'w');f.write(commit_number);f.close()"
-        pip install typing_extensions
+        conda install typing_extensions -y
         python -m pip install -r requirements.txt > tmp_pip_install_requirements_log.txt
         python setup.py bdist_wheel > tmp_log.txt
 
