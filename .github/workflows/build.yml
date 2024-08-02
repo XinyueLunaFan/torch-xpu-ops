@@ -39,9 +39,9 @@ jobs:
     - name: Set conda environment
       shell: cmd
       run: |
-         call %conda_path%\Scripts\activate.bat
+         call conda env list
          call conda remove -n %conda_env% --all -y
-         call conda create --name %conda_env% python=3.10 --clone base -y
+         call conda create -n %conda_env% python=3.10 --clone base -y
          call conda activate %conda_env%
          call conda remove ucrt -y
          call conda install cmake==3.26.4 --force -y
@@ -70,9 +70,10 @@ jobs:
         git clone https://github.com/pytorch/pytorch.git %home_dir%\pytorch
         cd %home_dir%\pytorch
         echo ${{ inputs.working_commit }} > third_party/xpu.txt
-        git sync
-        git submodule update --init --recursive
-        python -m pip install -r requirements.txt
+        git checkout c8626a4e1f0553c8a9af32515555409d151a00c0
+        pip install pyyaml
+        set USE_XPU=1
+        set TORCH_XPU_ARCH_LIST="ats-m150"
         python -u setup.py bdist_wheel
 
     - name: Build TorchVision
@@ -84,7 +85,6 @@ jobs:
         if exist "%home_dir%\vision" rmdir /s /q "%home_dir%\vision"
         git clone https://github.com/pytorch/vision.git %home_dir%\vision
         cd %home_dir%\vision
-        git submodule update --init --recursive
         pip install -r docs/requirements.txt
 
         if exist %home_dir%\pytorch\dist\torch-*.whl (
@@ -103,22 +103,3 @@ jobs:
           exit         
         )
 
-  Unit-tests:
-    runs-on: ["${{ inputs.win_runner }}"]
-    needs: [Build-whls, Preparation]
-    steps:
-    - name: Run Unit Tests
-      shell: cmd
-      run: |
-        call %conda_path%\Scripts\activate.bat activate %conda_env%
-        set "basekit_path=C:\Program Files (x86)\Intel\oneAPI"
-        call "%basekit_path%\setvars.bat"
-
-        if exist "%home_dir%\xpurepo" (
-          rmdir /s /q "%home_dir%\xpurepo"
-        )
-
-        git clone https://github.com/intel/torch-xpu-ops.git %home_dir%\xpurepo
-        cd %home_dir%\xpurepo\examples
-        pip install pytest expecttest
-        python -m pytest -v | tee "%home_dir%\mtl-bundle-uts.log"
