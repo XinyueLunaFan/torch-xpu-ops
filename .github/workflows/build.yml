@@ -57,6 +57,7 @@ jobs:
     - name: Build Torch
       shell: cmd
       run: |
+        call echo %cd%
         call %conda_path%\envs\%conda_env%
         set "basekit_path=C:\Program Files (x86)\Intel\oneAPI"
         call "%basekit_path%\setvars.bat"
