@@ -114,3 +114,19 @@ jobs:
         cd %home_dir%\xpurepo\examples
         pip install pytest expecttest
         python -m pytest -v | tee "%home_dir%\mtl-bundle-uts.log"
+
+  Upload-artifacts:
+    runs-on: ["${{ inputs.win_runner }}"]
+    needs: [Preparation, Build-whls]
+    steps:
+    - name: Upload whls
+      uses: actions/upload-artifact@v2
+      with:
+        name: whls
+        path: C:\pytorch\dist
+
+    - name: Upload logs
+      uses: actions/upload-artifact@v2
+      with:
+        name: logs
+        path: C:\pytorch\tmp_log.txt 
