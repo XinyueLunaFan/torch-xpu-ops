@@ -15,7 +15,7 @@ on:
 
 env:
     home_dir: 'torch'
-    conda_env: 'torch_venv'
+    conda_env: 'torch2_venv'
     conda_path: 'C:\Users\nrvalgo_jenkinsadm\miniforge3'
     python_version: '3.10'
     node_proxy: 'http://proxy-us.intel.com:911'
@@ -57,7 +57,7 @@ jobs:
     - name: Build Torch
       shell: cmd
       run: |
-        call %conda_path%\Scripts\activate.bat %conda_env%
+        call %conda_path%\envs\%conda_env%
         set "basekit_path=C:\Program Files (x86)\Intel\oneAPI"
         call "%basekit_path%\setvars.bat"
 
