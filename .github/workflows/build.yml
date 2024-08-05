@@ -45,7 +45,7 @@ jobs:
         call conda create -n %conda_env% python=3.10 -y
         call conda activate %conda_env%
         call conda remove ucrt -y
-        call pip install cmake=3.26.4
+        call pip install cmake==3.26.4
         call pip install pyyaml
         call conda list
   Build-whls:
