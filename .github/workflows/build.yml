@@ -9,8 +9,12 @@ on:
             - "icx-4434"
             - "142497"
             - "self-hosted"
-        working_commit:
+        xpu_commit:
             description: 'Working commit to pass to xpu.txt'
+            required: true
+            type: string
+        torch_commit:
+            description: 'Working torch commit to pass to git checkout'
             required: true
             type: string
 
@@ -61,13 +65,20 @@ jobs:
 
         git clone https://github.com/pytorch/pytorch.git C:\pytorch > tmp_git_log.txt
         cd C:\pytorch
-        git checkout c8626a4e1f0553c8a9af32515555409d151a00c0
-        set commit_number_arg=${{ inputs.working_commit }}
+        git checkout ${{ inputs.torch_commit }}
+        set commit_number_arg=${{ inputs.xpu_commit }}
         python -c "import os;commit_number = os.getenv('commit_number_arg');f=open('third_party/xpu.txt', 'w');f.write(commit_number);f.close()"
         call conda install conda-forge::rust -y
         call conda install typing_extensions -y
         python -m pip install -r requirements.txt > tmp_pip_install_requirements_log.txt
         python setup.py bdist_wheel > tmp_log.txt
+        echo "[INFO] begin to install torch whls"
+        for /r dist %%i in (torch*.whl) do (
+            set whl=%%i
+        )
+        echo "[INFO] the toch version is %whl%" 
+        python -m pip install %whl%
+        
 
     - name: Build TorchVision
       shell: cmd
@@ -119,7 +130,7 @@ jobs:
 
   Upload-artifacts:
     runs-on: ["${{ inputs.win_runner }}"]
-    needs: [Preparation, Build-whls]
+    needs: [Preparation, Build-whls, Unit-tests]
     steps:
     - name: Upload whls
       uses: actions/upload-artifact@v2
