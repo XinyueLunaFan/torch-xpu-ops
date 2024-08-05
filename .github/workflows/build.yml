@@ -42,7 +42,7 @@ jobs:
         call conda activate %conda_env%
         call conda install cmake==3.26.4 ninja -y
         call conda remove ucrt -y
-        call conda install pyyaml -y
+        call pip install pyyaml
         call conda list
   Build-whls:
     runs-on: ["${{ inputs.win_runner }}"]
