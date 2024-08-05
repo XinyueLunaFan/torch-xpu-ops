@@ -39,7 +39,6 @@ jobs:
         call conda remove -n %conda_env% --all -y
         call conda create -n %conda_env% python=3.10 -y
         call conda activate %conda_env%
-        call conda remove ucrt -y
         call conda install cmake==3.26.4 ninja -y
         call conda install pyyaml -y
         call conda list
