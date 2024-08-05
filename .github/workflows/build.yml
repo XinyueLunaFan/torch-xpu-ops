@@ -7,6 +7,7 @@ on:
             type: choice
             options:
             - "icx-4434"
+            - "142497"
             - "self-hosted"
         working_commit:
             description: 'Working commit to pass to xpu.txt'
@@ -40,6 +41,7 @@ jobs:
         call conda create -n %conda_env% python=3.10 -y
         call conda activate %conda_env%
         call conda install cmake==3.26.4 ninja -y
+        call conda remove ucrt -y
         call conda install pyyaml -y
         call conda list
   Build-whls:
