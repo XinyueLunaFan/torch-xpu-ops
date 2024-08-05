@@ -61,6 +61,7 @@ jobs:
 
         git clone https://github.com/pytorch/pytorch.git C:\pytorch > tmp_git_log.txt
         cd C:\pytorch
+        git checkout c8626a4e1f0553c8a9af32515555409d151a00c0
         set commit_number_arg=${{ inputs.working_commit }}
         python -c "import os;commit_number = os.getenv('commit_number_arg');f=open('third_party/xpu.txt', 'w');f.write(commit_number);f.close()"
         call conda install conda-forge::rust -y
